@@ -82,4 +82,7 @@ python -m uvicorn main:app --reload
 ## API 문서
 서버 실행 후 다음 URL에서 API 문서를 확인할 수 있습니다:
 - Swagger UI: http://localhost:8000/docs
+
+![Swagger UI](6-swagger자동완성.png)
+
 - ReDoc: http://localhost:8000/redoc
