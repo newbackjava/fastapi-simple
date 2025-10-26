@@ -56,7 +56,7 @@ def create_user(user: dict):
 ![Unicorn 서버 실행](5-unicorn이용해웹서버시작.png)
 
 ```bash
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
 ## 프로젝트 구조
@@ -76,7 +76,7 @@ pip install -r requirements.txt
 
 2. 서버 실행:
 ```bash
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
 ## API 문서
