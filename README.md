@@ -7,20 +7,57 @@ FastAPI를 사용한 간단한 API 서버 구축 프로젝트입니다.
 ### 1. 프로젝트 생성
 ![프로젝트 생성](1-project생성.png)
 
+
 ### 2. requirements.txt 생성
 ![requirements.txt 생성](2-requirements생성.png)
 
+```
+fastapi
+uvicorn
+
+```
+
 ### 3. requirements.txt 설치
-![requirements.txt 설치](2-requirements설치.png)
+![requirements.txt 설치](3-requirements설치.png)
+
+```bash
+pip install -r requirements.txt
+```
+
 
 ### 4. main.py 생성 및 기본 코드 작성
-![main.py 초기 설정](3-mainjs생성.png)
+![main.py 초기 설정](4-mainjs생성.png)
 
-### 5. main.py 코드 구현
-![main.py 구현](4-mainjs생성.png)
+```
+from fastapi import FastAPI
 
-### 6. Unicorn 서버 실행
+# FastAPI 앱 인스턴스 생성
+app = FastAPI()
+
+# 기본 루트 엔드포인트
+@app.get("/")
+def read_root():
+    return {"message": "Hello FastAPI!"}
+
+# 경로 파라미터 예시
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: str = None):
+    return {"item_id": item_id, "query": q}
+
+# POST 요청 예시
+@app.post("/users/")
+def create_user(user: dict):
+    return {"user_created": user}
+
+
+```
+
+### 5. Unicorn 서버 실행
 ![Unicorn 서버 실행](5-unicorn이용해웹서버시작.png)
+
+```bash
+uvicorn main:app --reload
+```
 
 ## 프로젝트 구조
 ```
