@@ -53,7 +53,7 @@ def create_user(user: dict):
 ```
 
 ### 5. Unicorn 서버 실행
-![Unicorn 서버 실행](5-unicorn이용해웹서버시작.png)
+![Uvicorn 서버 실행](5-uvicorn이용해웹서버시작.png)
 
 ```bash
 python -m uvicorn main:app --reload
