@@ -108,7 +108,7 @@ python -m uvicorn main:app --reload
 
 <hr>
 
-## 수정해보자
+## :smile 수정해보자
 ![main.py수정](8-수정해보자.png)
 
 ```
