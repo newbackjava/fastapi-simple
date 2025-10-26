@@ -8,10 +8,10 @@ FastAPI를 사용한 간단한 API 서버 구축 프로젝트입니다.
 ![프로젝트 생성](1-project생성.png)
 
 ### 2. requirements.txt 생성
-![requirements.txt 생성](2-requrements생성.png)
+![requirements.txt 생성](2-requirements생성.png)
 
 ### 3. requirements.txt 설치
-![requirements.txt 설치](2-requrements설치.png)
+![requirements.txt 설치](2-requirements설치.png)
 
 ### 4. main.py 생성 및 기본 코드 작성
 ![main.py 초기 설정](3-mainjs생성.png)
