@@ -69,9 +69,28 @@ fastapi-simple/
 
 ## 실행 방법
 
-1. 의존성 설치:
+### SSL 오류 해결 (필요한 경우)
+만약 다음과 같은 SSL 오류가 발생하는 경우:
+```
+WARNING: pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available.
+```
+
+macOS의 경우:
+```bash
+brew install openssl
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+python -m pip install --upgrade pip
+```
+
+### 의존성 설치
 ```bash
 pip install -r requirements.txt
+```
+
+SSL 오류가 계속되는 경우 아래 명령어를 사용해보세요:
+```bash
+pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
 ```
 
 2. 서버 실행:
