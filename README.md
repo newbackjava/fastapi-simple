@@ -103,6 +103,14 @@ python -m uvicorn main:app --reload
 - Swagger UI: http://localhost:8000/docs
 
 ![Swagger UI](6-swagger자동완성.png)
+<img width="3550" height="1968" alt="스크린샷 2025-11-06 06 01 57" src="https://github.com/user-attachments/assets/3693c98b-3775-46f9-8563-ba8116d26d40" />
+<img width="728" height="230" alt="스크린샷 2025-11-06 06 02 28" src="https://github.com/user-attachments/assets/07f0887d-89cb-48d0-a44b-1c0c1bda4c9b" />
+
+-> curl명령어로 터미널(명령 프롬프트)에서 테스트해보자.!!
+
+<img width="1676" height="605" alt="스크린샷 2025-11-06 06 05 30" src="https://github.com/user-attachments/assets/fa9dfd36-b2d8-4ae7-88bd-70996dc94ba7" />
+
+-> postman에 주소 등록하고 http method별로 테스트해보자.!!
 
 - ReDoc: http://localhost:8000/redoc
 
@@ -110,6 +118,8 @@ python -m uvicorn main:app --reload
 
 ## :smile 수정해보자
 ![main.py수정](8-수정해보자.png)
+<img width="3550" height="1968" alt="스크린샷 2025-11-06 06 01 57" src="https://github.com/user-attachments/assets/a4df5afe-1807-4b2b-93e3-b43616ec15c0" />
+<img width="728" height="230" alt="스크린샷 2025-11-06 06 02 28" src="https://github.com/user-attachments/assets/f2a908c8-8944-4960-b216-3128a3e06dae" />
 
 ```
 # 경로 파라미터 예시
