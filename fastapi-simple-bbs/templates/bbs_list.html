@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}BBS List{% endblock %}
+
+{% block scripts %}
+<style>
+  /* 전체 폭 제한 + 가운데 정렬 */
+  .list-wrap {
+    max-width: 980px;
+    margin: 24px auto;
+  }
+  /* 테이블 스타일 보강 */
+  .bbs-table th {
+    white-space: nowrap;
+    background: #f8fafc;
+  }
+  .bbs-table td,
+  .bbs-table th {
+    vertical-align: middle;
+  }
+  /* 제목 셀: 긴 글자 줄바꿈 & 말줄임 */
+  .title-cell {
+    max-width: 560px;       /* 필요 시 조절 */
+    word-break: break-word; /* 한글 단어 줄바꿈 */
+  }
+  .title-link {
+    text-decoration: none;
+  }
+  .title-link:hover {
+    text-decoration: underline;
+  }
+  /* 상단 툴바(검색/작성) 정렬 */
+  .toolbar {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-form {
+    display: flex;
+    gap: .5rem;
+    flex: 1;
+  }
+  .search-form .form-control {
+    max-width: 360px;
+  }
+  /* 빈 상태(Empty state) */
+  .empty-state {
+    padding: 48px 16px;
+    text-align: center;
+    color: #64748b;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <hr color="red">
+
+  <div class="list-wrap">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <!-- 상단 배너 이미지 -->
+        <img src="/static/img/img2.jpg"
+             style="width:100%;max-height:200px;object-fit:cover;border-radius:.25rem;"
+             alt="bbs image">
+
+        <!-- 상단 툴바: 검색 + 글쓰기 -->
+        <div class="toolbar mt-3">
+          <form action="/bbs/bbs_search" method="get" class="search-form" role="search">
+            <input type="text"
+                   class="form-control"
+                   name="q"
+                   placeholder="제목/내용/작성자 검색"
+                   value="{{ q|default('') }}">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+            {% if q %}
+              <a class="btn btn-outline-light border" href="/bbs/bbs_list">Clear</a>
+            {% endif %}
+          </form>
+          <a href="/bbs/bbs_insert" class="btn btn-primary">New Post</a>
+        </div>
+
+        <!-- 목록 테이블 (전체 표시) -->
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered align-middle bbs-table">
+            <colgroup>
+              <col style="width:80px;">    <!-- No -->
+              <col>                        <!-- Title -->
+              <col style="width:140px;">   <!-- Writer -->
+              <col style="width:170px;">   <!-- Created -->
+              <col style="width:170px;">   <!-- Updated -->
+              <col style="width:160px;">   <!-- Actions -->
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">No</th>
+                <th scope="col">Title</th>
+                <th scope="col" class="text-center">Writer</th>
+                <th scope="col" class="text-center">Content</th>
+                <th scope="col" class="text-center">Created</th>
+                <th scope="col" class="text-center">Updated</th>
+                <th scope="col" class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if rows and rows|length > 0 %}
+                {% for row in rows %}
+                  <tr>
+                    <td class="text-center">{{ row.no }}</td>
+                    <td class="title-cell">
+                      <a class="title-link" href="/bbs/bbs_read/{{ row.no }}">
+                        {{ row.title }}
+                      </a>
+                     <td class="text-center">{{ row.content }}</td>
+                    </td>
+                    <td class="text-center">{{ row.writer }}</td>
+                    <td class="text-center">
+                      {% if row.created_at %}
+                        {{ row.created_at.strftime('%Y-%m-%d %H:%M') }}
+                      {% else %}-{% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if row.updated_at %}
+                        {{ row.updated_at.strftime('%Y-%m-%d %H:%M') }}
+                      {% else %}-{% endif %}
+                    </td>
+                    <td class="text-center">
+                      <div class="d-flex gap-1 justify-content-center">
+                        <a class="btn btn-sm btn-outline-primary" href="/bbs/bbs_update/{{ row.no }}/update">Update</a>
+                        <form action="/bbs/delete/{{ row.no }}" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
+                          <!-- CSRF를 쓰는 경우 hidden 필드 추가 -->
+                          {# <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> #}
+                          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="6">
+                    <div class="empty-state">게시물이 없습니다.</div>
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
