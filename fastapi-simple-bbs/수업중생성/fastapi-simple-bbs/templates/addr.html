@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}주소 연습 페이지{% endblock %}
+
+{% block content %}
+<h1>주소 메인</h1>
+<a href="/">
+    <button class="btn btn-danger"> 첫 페이지로 이동</button>
+</a><br>
+<hr>
+<a href="/items/100">/items/{item_id} 요청</a> <br>
+<a href="/items/100/hong">/items/{item_id}/{item_name} 요청</a> <br>
+<a href="/items?item_id=100&item_name=hong">/items요청</a> <br>
+<a href="/page">page요청-page.html에 값 전달</a>
+{% endblock %}

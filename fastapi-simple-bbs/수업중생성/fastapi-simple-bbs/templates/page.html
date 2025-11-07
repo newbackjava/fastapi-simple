@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}page{% endblock %}
+
+{% block content %}
+<h1>page</h1>
+<a href="/">
+    <button class="btn btn-danger"> 첫 페이지로 이동</button>
+</a><br>
+<hr>
+- 이름은 : {{name}} <br>
+- 나이는 : {{age}}
+<ul>
+{% for item in food %}
+<li>{{item}}</li>
+{% endfor %}
+</ul>
+{% endblock %}
