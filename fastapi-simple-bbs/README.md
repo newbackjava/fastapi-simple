@@ -20,19 +20,25 @@
 
 ## 폴더 구조
 ```
+
 fastapi-simple/
-├─ main.py                    # FastAPI 엔트리포인트(라우트/템플릿 렌더)
-├─ bbs_db.py                  # MySQL 연동 CRUD 유틸
-├─ requirements.txt           # 의존성 목록
-├─ templates/                 # Jinja2 템플릿
-│  ├─ base.html               # 공통 레이아웃
-│  ├─ index.html              # 메인 페이지
-│  ├─ bbs.html                # BBS 입구(링크 모음)
-│  ├─ bbs_list.html           # BBS 목록 화면
-│  └─ bbs_insert.html         # BBS 등록 화면 (카드/표 스타일)
-└─ static/
-   ├─ css/site.css            # 스타일
-   └─ js/app.js               # 스크립트
+├─ main.py                 # FastAPI 라우터/템플릿 연결/엔드포인트
+├─ bbs_db.py               # BBS CRUD 모듈
+├─ templates/
+│  ├─ base.html
+│  ├─ index.html
+│  ├─ bbs.html
+│  ├─ bbs_list.html
+│  ├─ bbs_read.html
+│  ├─ bbs_update.html
+│  ├─ bbs_insert.html
+├─ static/
+│  ├─ css/site.css
+│  ├─ js/app.js
+│  └─ img/
+│     └─ ...               # 스크린샷/아이콘 등
+└─ requirements.txt
+
 ```
 > `app.mount("/static", ...)` 로 `/static/...` 경로에 정적 리소스를 서빙합니다.
 
