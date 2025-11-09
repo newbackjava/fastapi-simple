@@ -1,8 +1,7 @@
 
 # FastAPI + MySQL + Google Charts 대시보드 사용 설명서
 
-> **목표**: FastAPI 서버에서 MySQL 데이터를 조회하여 **Google Charts**(PieChart, Gauge)를 웹에 시각화하고, 간단한 **게시판(BBS)** CRUD까지 동작하는 프로젝트의 **설치·구성·실행·확장** 가이드를 제공합니다.  
-> 본 문서는 **중립적**이고 **재현 가능**하도록 작성되었으며, **초보자–중급** 수준의 백엔드/프론트엔드 통합 흐름을 상세히 설명합니다.
+> **목표**: FastAPI 서버에서 MySQL 데이터를 조회하여 **Google Charts**(PieChart, Gauge)를 웹에 시각화하고, 간단한 **게시판(BBS)** CRUD까지 동작하는 프로젝트의 **설치·구성·실행·확장** 가이드
 
 ---
 
