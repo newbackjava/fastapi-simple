@@ -51,8 +51,6 @@ project-root/
 ├─ templates/
 │  ├─ base.html
 │  ├─ index.html
-│  ├─ page.html
-│  ├─ page2.html
 │  ├─ bbs.html
 │  ├─ bbs_list.html
 │  ├─ bbs_read.html
@@ -215,6 +213,8 @@ LIMIT 3;
   - GET `/chart/count` : `{ "count": 10 }` 형태
   - GET `/chart/avg` : `{ "avg": [ {customers, avg}, ...] }`
   - GET `/chart/all` : `{ "all": [ {revenue, customers}, ...] }`
+
+<img width="744" height="185" alt="스크린샷 2025-11-09 11 35 39" src="https://github.com/user-attachments/assets/d8395eeb-d41f-41f9-9617-28b92df79187" />
 
 ---
 
