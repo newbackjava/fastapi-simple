@@ -10,7 +10,13 @@
 아래 그림은 브라우저에서 시작해 FastAPI, MySQL, Google Charts까지 이어지는 흐름을 시각화한 것
 <img width="1482" height="1036" alt="스크린샷 2025-11-09 09 32 09" src="https://github.com/user-attachments/assets/bdfbc957-2154-4ed4-9029-21beee713eae" />
 
+---
+<img width="1400" height="900" alt="fastapi_chart_flow_10pt_color" src="https://github.com/user-attachments/assets/30e1132b-1114-4f12-b69a-01d4341abadf" />
 
+---
+<img width="1400" height="980" alt="2d_list_diagram_10pt_color_nokr_spaced" src="https://github.com/user-attachments/assets/6f03fd54-b5cc-413f-8665-0d3baf36268b" />
+
+---
 
 > 브라우저가 `/chart` 페이지를 요청하면 템플릿이 렌더링되고, 템플릿 내 JS가 `axios`로 `/chart/count`, `/chart/avg`, `/chart/all`을 호출합니다.  
 > FastAPI는 `chart_db.py`를 통해 MySQL에서 데이터를 조회하여 JSON으로 반환하고, Google Charts가 JSON을 DataTable로 변환해 PieChart와 Gauge로 렌더링합니다.
