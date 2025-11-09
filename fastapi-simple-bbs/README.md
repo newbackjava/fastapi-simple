@@ -126,20 +126,19 @@ INSERT INTO bbs(title, content, writer) VALUES (%s, %s, %s);
 
 `main.py` 기준 등록된 경로
 
-| 메서드 | 경로 | 설명 |
-|---|---|---|
-| GET | `/` | 메인 페이지(템플릿) |
-| GET | `/items/{item_id}` | 샘플: Path Param 처리 |
-| POST | `/users/` | 샘플: Form/Body 처리 예제 |
-| GET | `/users/{user_id}/{user_name}/{user_age}` | 샘플: 다중 Path Param |
-| GET | `/raw` | 샘플: HTMLResponse로 원시 HTML 반환 |
-| GET | `/page` | 샘플: 리스트 렌더 템플릿 |
-| GET | `/page2` | 샘플: 쿼리/기본값 렌더 |
-| GET | `/page2/{item_id}` | 샘플: Path Param 렌더 |
-| GET | `/bbs` | BBS 입구(링크) |
-| GET | `/bbs/bbs_list` | **BBS 목록 화면** 렌더(검색 지원, 페이지네이션 없음) |
-| GET | `/bbs/bbs_insert` | **BBS 등록 폼 화면** (카드+표 UI) |
-| POST | `/bbs/bbs_insert` | **BBS 등록 처리** → 303 리다이렉트(`/bbs/bbs_list`) |
+- 정적 경로: `app.mount("/static", StaticFiles(directory="static"), name="static")`
+- 템플릿: `templates = Jinja2Templates(directory="templates")`
+- 예제 라우트: `/items/{item_id}`, `/users/{...}`, `/raw`
+- **템플릿 렌더링**: `TemplateResponse` 사용 시 `{"request": request}` **반드시 포함**
+  - 이유: Jinja2 템플릿 내에서 `url_for` 등 Starlette 컨텍스트가 필요하기 때문
+- **BBS 라우트**
+  - GET `/bbs/bbs_insert` : 작성 폼
+  - POST `/bbs/bbs_insert` : `Form(...)`로 값 수신 후 DB `create` → `RedirectResponse("/bbs/bbs_list", 303)`
+  - GET `/bbs/bbs_list` : 목록
+  - GET `/bbs/bbs_read/{no}` : 상세
+  - GET `/bbs/bbs_update/{no}` : 수정 폼
+  - POST `/bbs/bbs_update` : 수정 반영
+  - POST `/bbs/bbs_delete/{no}` : 삭제
 
 > `bbs_list.html`은 카드 상단 이미지 + 검색툴바 + 테이블로 구성되어 있습니다. 날짜는 `strftime('%Y-%m-%d %H:%M')`로 간단 표기합니다.
 
