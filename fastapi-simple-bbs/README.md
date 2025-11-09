@@ -27,8 +27,6 @@ fastapi-simple/
 ├─ templates/                 # Jinja2 템플릿
 │  ├─ base.html               # 공통 레이아웃
 │  ├─ index.html              # 메인 페이지
-│  ├─ page.html               # 샘플: 리스트 렌더
-│  ├─ page2.html              # 샘플: Path Param 렌더
 │  ├─ bbs.html                # BBS 입구(링크 모음)
 │  ├─ bbs_list.html           # BBS 목록 화면
 │  └─ bbs_insert.html         # BBS 등록 화면 (카드/표 스타일)
