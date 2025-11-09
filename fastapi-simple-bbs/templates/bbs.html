@@ -1,19 +1,46 @@
-{% extends "base.html" %}
-{% block title %}BBS{% endblock %}
+{% extends "base.html" %}  {# 이 템플릿은 base.html 레이아웃을 상속합니다. 공통 head/header/footer를 재사용 #}
+{% block title %}BBS{% endblock %}  {# 브라우저 탭/SEO용 페이지 타이틀 블록 #}
 
 {% block scripts %}
 <script>
-
+  // (페이지 전용 스크립트 영역)
+  // - 필요 시 DOM 이벤트 바인딩, 비동기 요청(axios), 초기화 코드 등을 이 안에 작성합니다.
+  // - 공통 스크립트는 base.html의 app.js에, 화면 전용 로직은 여기로 분리하는 것을 권장합니다.
+  // - 예: window.addEventListener('DOMContentLoaded', () => { ... })
 </script>
 {% endblock %}
 
 {% block content %}
-  <h2>bbs</h2>
-    <a href="/">home</a>
-<hr color="red">
-<img src="/static/img/img2.jpg" style="width:300px;height:200px;">
-<br>
-<a href="/bbs/bbs_insert"><button class="btn btn-danger">게시판 글쓰기</button></a>
-<a href="/bbs/bbs_list"><button class="btn btn-success">게시판 목록</button></a><br>
+  {# 본문 콘텐츠 시작: base.html의 { % block content % }를 오버라이드하여 실제 화면을 구성합니다. #}
+
+  <h2>bbs</h2>  {# 화면 제목. 접근성 측면에서 h1은 레이아웃 헤더에서 사용 중이므로 h2 사용 #}
+
+  {# 홈으로 돌아가는 링크. 라우팅은 서버에서 / → index 또는 메인 페이지로 연결되도록 구성됨 #}
+  <a href="/">home</a>
+
+  <hr color="red">  {# 시각적 구분선. Bootstrap 유틸리티 클래스로 대체 가능(예: <hr class="border-danger">) #}
+
+  {# 정적 이미지: /static/img/img2.jpg
+     - StaticFiles로 서빙되며 캐싱이 적용될 수 있습니다.
+     - 반응형을 고려한다면 Bootstrap의 .img-fluid를 사용할 수 있습니다. #}
+  <img src="/static/img/img2.jpg" style="width:300px;height:200px;" alt="게시판 이미지 예시">
+
+  <br> {# 간단한 줄바꿈. Bootstrap 마진 유틸리티가 더 일관된 방법입니다(예: class="mt-2"). #}
+
+  {# 게시글 작성 페이지로 이동하는 버튼.
+     - a 태그로 네비게이션, 내부에 button을 둔 형태.
+     - 시멘틱하게는 a.btn 또는 button + JS 네비게이션 둘 중 하나로 통일하는 것을 권장합니다. #}
+  <a href="/bbs/bbs_insert">
+    <button class="btn btn-danger">게시판 글쓰기</button>
+  </a>
+
+  {# 게시글 목록 페이지로 이동하는 버튼. 성공(녹색) 의미의 스타일을 부여 #}
+  <a href="/bbs/bbs_list">
+    <button class="btn btn-success">게시판 목록</button>
+  </a>
+  <br>
+
+  {# 필요 시 목록/작성 버튼을 버튼 그룹으로 묶을 수 있습니다.
+     예: <div class="btn-group" role="group">...</div> 또는 .d-flex .gap-2 유틸리티 #}
 
 {% endblock %}
