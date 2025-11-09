@@ -1,46 +1,64 @@
-{% extends "base.html" %}  {# 이 템플릿은 base.html 레이아웃을 상속합니다. 공통 head/header/footer를 재사용 #}
-{% block title %}BBS{% endblock %}  {# 브라우저 탭/SEO용 페이지 타이틀 블록 #}
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- 문서 유형 선언: HTML5를 사용함을 브라우저에 알림 -->
+    <meta charset="utf-8"/>
+    <!-- Jinja2 블록: 자식 템플릿에서 title 블록을 덮어쓰면 페이지별 제목을 동적으로 설정 가능 -->
+    <title>{% block title %}기본 타이틀{% endblock %}</title>
 
-{% block scripts %}
-<script>
-  // (페이지 전용 스크립트 영역)
-  // - 필요 시 DOM 이벤트 바인딩, 비동기 요청(axios), 초기화 코드 등을 이 안에 작성합니다.
-  // - 공통 스크립트는 base.html의 app.js에, 화면 전용 로직은 여기로 분리하는 것을 권장합니다.
-  // - 예: window.addEventListener('DOMContentLoaded', () => { ... })
-</script>
-{% endblock %}
+    <!-- Bootstrap 5 CSS (CDN)
+         - 빠르게 스타일을 적용하기 위해 CDN 사용
+         - 운영 환경에서는 SRI(Subresource Integrity)와 crossorigin 속성 사용 권장 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-{% block content %}
-  {# 본문 콘텐츠 시작: base.html의 { % block content % }를 오버라이드하여 실제 화면을 구성합니다. #}
+    <!-- Bootstrap 5 JS 번들(CDN)
+         - Popper 포함 bundle 사용 → 드롭다운/툴팁 등 컴포넌트 동작
+         - 성능상 <body> 끝이나 defer 사용을 고려할 수 있음(의존 스크립트가 없으므로 여기 둬도 무방) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
-  <h2>bbs</h2>  {# 화면 제목. 접근성 측면에서 h1은 레이아웃 헤더에서 사용 중이므로 h2 사용 #}
+    <!-- 프로젝트 고유 스타일
+         - uvicorn/Starlette의 StaticFiles로 서빙되는 정적 파일
+         - url_for('static', path=...)는 템플릿 렌더링 시 실제 경로로 치환됨 -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/site.css') }}">
 
-  {# 홈으로 돌아가는 링크. 라우팅은 서버에서 / → index 또는 메인 페이지로 연결되도록 구성됨 #}
-  <a href="/">home</a>
+    <!-- 프로젝트 고유 스크립트
+         - 페이지 공통 JS 로직(이벤트 핸들러, 유틸 등)을 모아두는 위치 -->
+    <script src="{{ url_for('static', path='js/app.js') }}"></script>
 
-  <hr color="red">  {# 시각적 구분선. Bootstrap 유틸리티 클래스로 대체 가능(예: <hr class="border-danger">) #}
+    <!-- Google Charts 로더
+         - 구글 차트 사용 시 필수 로더
+         - 페이지 내에서 google.charts.load(), setOnLoadCallback() 패턴으로 사용 -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-  {# 정적 이미지: /static/img/img2.jpg
-     - StaticFiles로 서빙되며 캐싱이 적용될 수 있습니다.
-     - 반응형을 고려한다면 Bootstrap의 .img-fluid를 사용할 수 있습니다. #}
-  <img src="/static/img/img2.jpg" style="width:300px;height:200px;" alt="게시판 이미지 예시">
+    <!-- Axios (CDN)
+         - 브라우저에서 간편한 HTTP 요청(GET/POST 등)을 위해 사용
+         - fetch를 대체하거나 보완하는 용도 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-  <br> {# 간단한 줄바꿈. Bootstrap 마진 유틸리티가 더 일관된 방법입니다(예: class="mt-2"). #}
+    <!-- Jinja2 블록: 하위 템플릿에서 개별 페이지 전용 스크립트를 주입하는 영역
+         - 예: 차트 초기화 스크립트, 페이지 전용 이벤트 바인딩 등 -->
+    {% block scripts %}{% endblock %}
+</head>
 
-  {# 게시글 작성 페이지로 이동하는 버튼.
-     - a 태그로 네비게이션, 내부에 button을 둔 형태.
-     - 시멘틱하게는 a.btn 또는 button + JS 네비게이션 둘 중 하나로 통일하는 것을 권장합니다. #}
-  <a href="/bbs/bbs_insert">
-    <button class="btn btn-danger">게시판 글쓰기</button>
-  </a>
+<body>
+<header>
+    <!-- 사이트 공통 헤더
+         - 로고/내비게이션/검색창 등을 배치할 수 있음
+         - Bootstrap 유틸리티 클래스(.container, .py-3 등)로 레이아웃 조정 가능 -->
+    <h1>fastAPI site</h1>
+</header>
 
-  {# 게시글 목록 페이지로 이동하는 버튼. 성공(녹색) 의미의 스타일을 부여 #}
-  <a href="/bbs/bbs_list">
-    <button class="btn btn-success">게시판 목록</button>
-  </a>
-  <br>
+<main>
+    <!-- Jinja2 블록: 페이지별 본문 콘텐츠
+         - 모든 자식 템플릿이 이 영역을 오버라이드하여 개별 UI를 렌더링 -->
+    {% block content %}{% endblock %}
+</main>
 
-  {# 필요 시 목록/작성 버튼을 버튼 그룹으로 묶을 수 있습니다.
-     예: <div class="btn-group" role="group">...</div> 또는 .d-flex .gap-2 유틸리티 #}
+<!-- (선택) 성능 팁:
+     - 큰 스크립트는 가능하면 body 하단 배치 또는 defer 속성으로 비차단 로딩을 고려
+     - 외부 CDN 사용 시 네트워크 정책에 맞게 SRI/버전 고정/캐시 정책 검토 -->
 
-{% endblock %}
+</body>
+</html>
