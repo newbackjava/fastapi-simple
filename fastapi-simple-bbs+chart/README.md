@@ -7,8 +7,11 @@
 
 ## 데이터 흐름 다이어그램
 
-아래 그림은 브라우저에서 시작해 FastAPI, MySQL, Google Charts까지 이어지는 흐름을 시각화한 것
 <img width="1482" height="1036" alt="스크린샷 2025-11-09 09 32 09" src="https://github.com/user-attachments/assets/bdfbc957-2154-4ed4-9029-21beee713eae" />
+
+---
+<a href=https://developers.google.com/chart/interactive/docs/gallery">google chart</a>
+<img width="1045" height="618" alt="스크린샷 2025-11-09 11 16 59" src="https://github.com/user-attachments/assets/1d89fb2f-bb23-423b-83d7-c89849569a5f" />
 
 ---
 <img width="1400" height="900" alt="fastapi_chart_flow_10pt_color" src="https://github.com/user-attachments/assets/30e1132b-1114-4f12-b69a-01d4341abadf" />
