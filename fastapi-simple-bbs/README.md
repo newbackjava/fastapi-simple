@@ -139,7 +139,7 @@ INSERT INTO bbs(title, content, writer) VALUES (%s, %s, %s);
   - GET `/bbs/bbs_update/{no}` : 수정 폼
   - POST `/bbs/bbs_update` : 수정 반영
   - POST `/bbs/bbs_delete/{no}` : 삭제
-  - POST `/bbs/bbs_search/{q}` : 검색
+  - GET `/bbs/bbs_search/` : 검색
 
 > `bbs_list.html`은 카드 상단 이미지 + 검색툴바 + 테이블로 구성되어 있습니다. 날짜는 `strftime('%Y-%m-%d %H:%M')`로 간단 표기합니다.
 
