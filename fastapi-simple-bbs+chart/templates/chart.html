@@ -1,90 +1,150 @@
-{% extends "base.html" %}
-{% block title %}{{ title }}{% endblock %}
+{% extends "base.html" %} {# 공통 레이아웃 상속: head/공통 스크립트/헤더를 재사용 #}
+{% block title %}{{ title }}{% endblock %} {# 페이지별 제목(Jinja 변수 title이 주입됨) #}
 
 {% block scripts %}
 <script type="text/javascript">
+/* ---------------------------
+ * 1) 상단 카운트 텍스트 업데이트
+ *    - GET /chart/count → { count: <정수> } 응답을 사용
+ * --------------------------- */
 
 axios.get('/chart/count').then(res => {
-    <!-- alert(res.data.count) -->
+    <!-- alert(res.data.count) -->  // ← 비권장: 대신 console.log 또는 // alert(...) 사용 권장
+    // DOM 요소 #count에 "전체 회원수 : N명" 텍스트 출력
     document.getElementById('count').innerHTML = "전체 회원수 : " + res.data.count + "명";
-})
+});
 
+
+/* ---------------------------
+ * 2) 파이 차트 로딩 & 렌더링
+ *    - /chart/avg → [{customers, avg}, ...]
+ *    - Google Charts corechart 패키지를 로드한 뒤 콜백으로 drawChart 실행
+ *    - arrayToDataTable의 첫 행은 헤더: ['avg', 'Customers']
+ * --------------------------- */
+
+// corechart(파이차트 포함) 로드
 google.charts.load('current', {'packages':['corechart']});
+// 페이지 로드 후 콜백 등록
 google.charts.setOnLoadCallback(drawChart);
+
 async function drawChart() {
+    // /chart/avg 호출 → 고객수(customers)별 평균 주문수(avg) 목록
     await axios.get('/chart/avg').then(res => {
-             data = res.data.avg;
-             console.log(data);
-             total = []
-             data_one = ['avg', 'Customers']
-             total.push(data_one);
+        const data = res.data.avg;       // 예: [{customers: 39, avg: 54.6667}, ...]
+        console.log(data);
 
-             for (x of data){
-                 data_one = [String(x.customers), x.avg]
-                 total.push(data_one);
-             }
-             var data = google.visualization.arrayToDataTable(total);
+        // Google DataTable용 2차원 리스트로 변환
+        // 첫 행은 헤더(열 이름)로 해석됨
+        const total = [];
+        let data_one = ['avg', 'Customers'];  // 열1: 라벨(문자), 열2: 값(숫자)
+        total.push(data_one);
 
-             var options = {
-               title: 'Customers Avg'
-             };
+        // 각 행: ['고객수(문자)', 평균주문수(숫자)]
+        for (const x of data) {
+            data_one = [String(x.customers), x.avg]; // Label은 문자열, Value는 숫자
+            total.push(data_one);
+        }
 
-             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        // 배열 → DataTable 변환
+        const dt = google.visualization.arrayToDataTable(total);
 
-             chart.draw(data, options);
-            })
+        // 차트 옵션(필요 시 legend, pieHole, colors 등 추가 가능)
+        const options = {
+            title: 'Customers Avg'
+        };
+
+        // PieChart 대상으로 렌더
+        const chart = new google.visualization.PieChart(
+            document.getElementById('piechart')
+        );
+        chart.draw(dt, options);
+    });
 }
 
 
-      google.charts.load('current', {'packages':['gauge']});
-      google.charts.setOnLoadCallback(drawChart2);
+/* ---------------------------
+ * 3) 게이지 차트 로딩 & 렌더링
+ *    - /chart/all → 상위 매출 3건 [{revenue, customers}, ...]
+ *    - 게이지는 각 행이 하나의 계기(label, value)를 뜻함
+ *    - 현재 헤더는 ['customers','revenue']이지만 사실상 ['Label','Value'] 의미
+ *    - red/yellow 구간은 0~100 스케일 전제를 암시 → 값 스케일 주의
+ * --------------------------- */
 
-      async function drawChart2() {
-            await axios.get('/chart/all').then(res => {
-                     data2 = res.data.all;
-                     console.log(data2);
-                     total2 = []
-                     data_one2 = ['customers', 'revenue']
-                     total2.push(data_one2);
-                     console.log(total2);
-                     for (x of data2){
-                         data_one2 = [String(x.customers), x.revenue]
-                         console.log(data_one2);
-                         total2.push(data_one2)
-                     }
-                    var data2 = google.visualization.arrayToDataTable(total2);
+// gauge 패키지 로드
+google.charts.load('current', {'packages':['gauge']});
+// 로드 후 콜백
+google.charts.setOnLoadCallback(drawChart2);
 
-                    var options2 = {
-                      width: 900, height: 600,
-                      redFrom: 90, redTo: 100,
-                      yellowFrom:75, yellowTo: 90,
-                      minorTicks: 5
-                    };
+async function drawChart2() {
+    // 상위 매출 3건 조회
+    await axios.get('/chart/all').then(res => {
+        const data2 = res.data.all;   // 예: [{revenue: 900000, customers: 39}, ...]
+        console.log(data2);
 
-                    var chart2 = new google.visualization.Gauge(document.getElementById('chart_div'));
+        // DataTable 변환
+        const total2 = [];
+        let data_one2 = ['customers', 'revenue'];  // 실제 의미는 ['Label', 'Value']
+        total2.push(data_one2);
+        console.log(total2);
 
-                    chart2.draw(data2, options2);
+        // 각 행: ['고객수 라벨', 매출 값]
+        for (const x of data2) {
+            data_one2 = [String(x.customers), x.revenue];
+            console.log(data_one2);
+            total2.push(data_one2);
+        }
 
-                    setInterval(function() {
-                      data2.setValue(0, 1, 40 + Math.round(60 * Math.random()));
-                      chart2.draw(data2, options2);
-                    }, 13000);
-                    setInterval(function() {
-                      data2.setValue(1, 1, 40 + Math.round(60 * Math.random()));
-                      chart2.draw(data2, options2);
-                    }, 5000);
-                    setInterval(function() {
-                      data2.setValue(2, 1, 60 + Math.round(20 * Math.random()));
-                      chart2.draw(data2, options2);
-                    }, 26000);
+        const dt2 = google.visualization.arrayToDataTable(total2);
 
-        })
+        // 게이지 옵션
+        // width/height: 차트 크기
+        // red/yellowFrom/To: 경고/주의 구간 범위(0~100 기준)
+        // 매출(revenue)이 매우 큰 수(예: 900000)이면 게이지가 0~100 범위를 벗어남
+        //    → 실제 사용 시 normalize(예: revenue/10000) 또는 max 설정 필요
+        const options2 = {
+            width: 900,
+            height: 600,
+            redFrom: 90,
+            redTo: 100,
+            yellowFrom: 75,
+            yellowTo: 90,
+            minorTicks: 5
+            // 예) max 지정 예시: max: 100
+        };
+
+        const chart2 = new google.visualization.Gauge(
+            document.getElementById('chart_div')
+        );
+        chart2.draw(dt2, options2);
+
+        // 아래 setInterval들은 데모용 애니메이션(값 랜덤 갱신)
+        // 행 인덱스(0~2)의 값(열1: Value)을 주기적으로 업데이트
+        setInterval(function() {
+            dt2.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+            chart2.draw(dt2, options2);
+        }, 13000);
+
+        setInterval(function() {
+            dt2.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+            chart2.draw(dt2, options2);
+        }, 5000);
+
+        setInterval(function() {
+            dt2.setValue(2, 1, 60 + Math.round(20 * Math.random()));
+            chart2.draw(dt2, options2);
+        }, 26000);
+    });
 }
 </script>
 {% endblock %}
 
 {% block content %}
+{# 카운트 표시 영역: /chart/count 응답을 받아 텍스트 삽입 #}
 <h1 id="count" style="margin-bottom:16px;"></h1>
+
+{# 파이차트 대상 DOM #}
 <div id="piechart" style="width: 900px; height: 500px;"></div>
+
+{# 게이지 차트 대상 DOM #}
 <div id="chart_div"></div>
 {% endblock %}
