@@ -10,7 +10,7 @@
 <img width="1482" height="1036" alt="스크린샷 2025-11-09 09 32 09" src="https://github.com/user-attachments/assets/bdfbc957-2154-4ed4-9029-21beee713eae" />
 
 ---
-<a href=https://developers.google.com/chart/interactive/docs/gallery">google chart</a>
+✅ https://developers.google.com/chart/interactive/docs/gallery
 <img width="1045" height="618" alt="스크린샷 2025-11-09 11 16 59" src="https://github.com/user-attachments/assets/1d89fb2f-bb23-423b-83d7-c89849569a5f" />
 
 ---
