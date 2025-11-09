@@ -1,6 +1,10 @@
-# fastapi-simple — 사용설명서 (README)
-<img width="1680" height="1528" alt="스크린샷 2025-11-07 06 51 32" src="https://github.com/user-attachments/assets/d00218c3-11ca-40a1-bf07-2932f280b86d" />
-<img width="899" height="822" alt="스크린샷 2025-11-07 07 41 55" src="https://github.com/user-attachments/assets/522899e5-a74d-4416-bdd9-11a655dffa2b" />
+# fastapi-simple-bbs
+<img width="944" height="573" alt="스크린샷 2025-11-09 11 27 50" src="https://github.com/user-attachments/assets/4ac1749e-602c-4fe2-911f-d48deca5ce63" />
+
+<img width="854" height="818" alt="스크린샷 2025-11-09 11 28 26" src="https://github.com/user-attachments/assets/ea66293f-e212-4a53-b551-47c36f7a9897" />
+
+<img width="863" height="813" alt="스크린샷 2025-11-09 11 28 42" src="https://github.com/user-attachments/assets/34a7226f-7852-4c14-bf39-250d93e4061e" />
+<img width="458" height="151" alt="스크린샷 2025-11-09 11 28 51" src="https://github.com/user-attachments/assets/516a5663-6dcd-4009-ac5e-195fdeb89032" />
 
 
 ## 개요
