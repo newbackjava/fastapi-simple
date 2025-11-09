@@ -1,50 +1,75 @@
-{% extends "base.html" %}
-{% block title %}BBS_insert{% endblock %}
+{% extends "base.html" %}  {# 공통 레이아웃 상속: head/공통 스크립트/헤더 등을 재사용 #}
+{% block title %}BBS_insert{% endblock %}  {# 페이지 탭/SEO용 제목 #}
 
 {% block scripts %}
 <style>
-  /* 폼이 화면을 다 먹지 않도록 폭을 제한하고 가운데 정렬 */
+  /* [레이아웃] 폼 컨테이너: 화면 중앙 정렬 + 최대 폭 제한으로 가독성 확보 */
   .form-wrap {
-    max-width: 820px;   /* 필요 시 640~900px 사이로 조절 */
-    margin: 24px auto;
+    max-width: 820px;   /* 필요 시 640~900px 사이로 조정 */
+    margin: 24px auto;  /* 상하 여백 + 수평 중앙 */
   }
+
+
+
+  /* [테이블] 라벨/필드 2열 배치: 라벨 폭 고정 + 구분 배경 */
   .form-table th {
-    width: 140px;       /* 라벨 열 고정폭 */
-    white-space: nowrap;
-    background: #fffbe6; /* 은은한 구분 배경 */
+    width: 140px;           /* 라벨 컬럼 고정 폭으로 레이아웃 안정화 */
+    white-space: nowrap;    /* 라벨 줄바꿈 방지 */
+    background: #fffbe6;    /* 은은한 배경으로 가독성 향상 */
   }
+
+  /* [필드 폭] 각 셀 내부에서는 100% 사용 */
   .form-table td input.form-control,
   .form-table td textarea.form-control {
-    width: 100%;        /* 셀 안에서만 가득 차도록 */
+    width: 100%;
   }
+
+  /* [본문 필드] 초기 높이 확보 + 세로 리사이즈 허용 */
   .form-table textarea {
-    min-height: 240px;  /* 스크린샷 감안하여 높이 확보, 필요 시 조절 */
-    resize: vertical;
+    min-height: 240px;  /* 초기 입력 편의성 */
+    resize: vertical;   /* 사용자가 세로만 조절 가능 */
   }
 </style>
 {% endblock %}
 
 {% block content %}
-  <h2>bbs</h2>
-  <a href="/bbs">bbs main</a>
-  <hr color="red">
+  {# 본문 콘텐츠 시작: 이 블록이 실제 페이지 UI를 구성 #}
+  <h2>bbs</h2>  {# 페이지 섹션 제목(헤더의 h1과 계층 구분을 위해 h2 사용) #}
 
+  <a href="/bbs">bbs main</a>  {# 게시판 메인으로 이동 #}
+  <hr color="red">  {# 시각적 구분선: Bootstrap 유틸 사용 시 <hr class="border-danger"> 등도 가능 #}
+
+  <!-- 카드형 컨테이너: 시각적 그룹화로 집중도 향상 -->
   <div class="form-wrap">
     <div class="card shadow-sm">
       <div class="card-body">
-        <img src="/static/img/img2.jpg" style="width:100%;max-height:200px;object-fit:cover;border-radius:.25rem;" alt="bbs image">
+
+        <!-- 상단 배너/헤더 이미지: 비율 유지 + 영역 채움 -->
+        <img
+          src="/static/img/img2.jpg"
+          style="width:100%;max-height:200px;object-fit:cover;border-radius:.25rem;"
+          alt="bbs image">  <!-- 접근성용 대체 텍스트 -->
+
+        <!-- 글쓰기 폼: POST로 /bbs/bbs_insert 라우트에 제출 -->
+        <!-- 서버에서는 FastAPI @app.post("/bbs/bbs_insert")가 Form(...)으로 값 수신 후 DB insert + 303 Redirect -->
         <form action="/bbs/bbs_insert" method="post" class="mt-3">
+          <!-- 라벨/필드를 2열 테이블로 배치: 스크린리더 친화적(scope="row") -->
           <table class="table table-bordered align-middle form-table mb-3">
             <colgroup>
-              <col style="width:140px;">
-              <col>
+              <col style="width:140px;">  <!-- 라벨 열 고정폭 -->
+              <col>                        <!-- 입력 필드 열 -->
             </colgroup>
             <tbody>
+
+              <!-- 제목 -->
               <tr>
                 <th scope="row">
+                  <!-- 라벨과 입력은 id/for로 연결(접근성 향상) -->
                   <label for="title" class="form-label mb-0">Title</label>
                 </th>
                 <td>
+                  <!-- 기본 클라이언트 검증: required/minlength/maxlength -->
+                  <!-- 서버에서도 동일/강화 검증 필수(XSS/길이/금지어 등) -->
                   <input
                     type="text"
                     class="form-control"
@@ -58,11 +83,15 @@
                   >
                 </td>
               </tr>
+
+              <!-- 본문 -->
               <tr>
                 <th scope="row">
                   <label for="content" class="form-label mb-0">Content</label>
                 </th>
                 <td>
+                  <!-- textarea: 기본 높이 확보 + 길이 제한 -->
+                  <!-- 서버측에서 HTML escape/화이트리스트/마크다운 변환 등 보안 처리 권장 -->
                   <textarea
                     class="form-control"
                     id="content"
@@ -73,11 +102,14 @@
                     maxlength="5000">test</textarea>
                 </td>
               </tr>
+
+              <!-- 작성자 -->
               <tr>
                 <th scope="row">
                   <label for="writer" class="form-label mb-0">Writer</label>
                 </th>
                 <td>
+                  <!-- 인증 시스템 도입 시, 작성자명은 프런트 입력 대신 서버에서 세션/토큰 기반으로 결정 권장 -->
                   <input
                     type="text"
                     class="form-control"
@@ -90,14 +122,20 @@
                     maxlength="50">
                 </td>
               </tr>
+
+              <!-- 제출 버튼 -->
               <tr>
                 <td colspan="2" class="text-end">
+                  <!-- Submit → POST /bbs/bbs_insert → DB insert → 303 Redirect(/bbs/bbs_list) -->
+                  <!-- PRG 패턴(Post/Redirect/Get)으로 새로고침 중복 제출 방지 -->
                   <button type="submit" class="btn btn-primary px-4">Submit</button>
                 </td>
               </tr>
             </tbody>
           </table>
-          {# CSRF 토큰을 쓰는 경우 아래 hidden 필드를 함께 넣어주세요.
+
+          {# (선택) CSRF 사용 시, 서버에서 생성한 토큰을 hidden 필드로 포함
+             FastAPI 기본 제공은 아님 → 별도 미들웨어/라이브러리 사용 필요
           <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
           #}
         </form>
