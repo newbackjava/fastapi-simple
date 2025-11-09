@@ -208,6 +208,7 @@ LIMIT 3;
   - GET `/bbs/bbs_update/{no}` : 수정 폼
   - POST `/bbs/bbs_update` : 수정 반영
   - POST `/bbs/bbs_delete/{no}` : 삭제
+  - GET `/bbs/bbs_search` : 검색
 - **차트 라우트**
   - GET `/chart` : 차트 페이지 템플릿
   - GET `/chart/count` : `{ "count": 10 }` 형태
