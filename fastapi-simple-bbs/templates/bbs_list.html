@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block title %}BBS_list{% endblock %}
+{% extends "base.html" %} {# 공통 레이아웃 상속: head/공통 스크립트/헤더 포함 #}
+{% block title %}BBS_list{% endblock %} {# 페이지 탭/SEO용 제목 #}
 
 {% block scripts %}
 <style>
@@ -59,12 +59,14 @@
 <div class="list-wrap">
     <div class="card shadow-sm">
         <div class="card-body">
-            <!-- 상단 배너 이미지 -->
+
             <img src="/static/img/img2.jpg"
                  style="width:100%;max-height:200px;object-fit:cover;border-radius:.25rem;"
                  alt="bbs image">
 
-            <!-- 상단 툴바: 검색 + 글쓰기 -->
+            {# 검색 폼:
+               - GET /bbs/bbs_search?q=... 로 서버에 질의 파라미터 전달
+               - FastAPI 라우터 @app.get("/bbs/bbs_search")에서 q를 받아 DB 검색 수행 #}
             <div class="toolbar mt-3">
                 <form action="/bbs/bbs_search" method="get" class="search-form" role="search">
                     <input type="text"
@@ -74,11 +76,14 @@
                     >
                     <button type="submit" class="btn btn-outline-secondary">Search</button>
                 </form>
+
+                {# 글쓰기 화면 이동 (GET /bbs/bbs_insert → 작성 폼 렌더링) #}
                 <a href="/bbs/bbs_insert" class="btn btn-primary">New Post</a>
+
+                {# 홈으로 이동 #}
                 <a class="btn btn-outline-success" href="/">Home</a>
             </div>
 
-            <!-- 목록 테이블 (전체 표시) -->
             <div class="table-responsive mt-3">
                 <table class="table table-bordered align-middle bbs-table">
                     <colgroup>
@@ -100,46 +105,78 @@
                         <th scope="col" class="text-center">Actions</th>
                     </tr>
                     </thead>
+
                     <tbody>
+                    {# 목록 데이터(rows) 존재 여부 확인:
+                       - rows는 FastAPI 라우터에서 템플릿 컨텍스트로 전달
+                       - 예: return templates.TemplateResponse("...", {"request": request, "rows": rows}) #}
                     {% if rows and rows|length > 0 %}
-                    {% for row in rows %}
-                    <tr>
+
+                      {# rows 반복 렌더링:
+                         - 각 row는 DictCursor 결과(예: {"no":..., "title":..., ...})
+                         - 누락 키 접근 시 에러가 나지 않도록 서버에서 필드 보장 권장 #}
+                      {% for row in rows %}
+                      <tr>
                         <td class="text-center">{{ row.no }}</td>
+
+                        {# 상세 페이지 링크:
+                           - GET /bbs/bbs_read/{no}
+                           - 서버: @app.get("/bbs/bbs_read/{no}") → 개별 글 조회 #}
                         <td class="title-cell">
-                            <a class="title-link" href="/bbs/bbs_read/{{ row.no }}">
-                                {{ row.title }}
-                            </a>
+                          <a class="title-link" href="/bbs/bbs_read/{{ row.no }}">
+                            {{ row.title }}
+                          </a>
+
+                        {# (주의) Content를 목록에 그대로 노출하면 내용이 길고 XSS 위험 가능
+                           - 서버에서 escape/요약 처리 권장 또는 목록에서는 미리보기 일부만 표시 권장 #}
                         <td class="text-center">{{ row.content }}</td>
+
                         <td class="text-center">{{ row.writer }}</td>
+
+                        {# created_at/updated_at가 datetime이면 포맷팅, 없으면 "-" 처리
+                           - 서버에서 strftime 가능하도록 datetime 타입 보장 권장 #}
                         <td class="text-center">
-                            {% if row.created_at %}
+                          {% if row.created_at %}
                             {{ row.created_at.strftime('%Y-%m-%d %H:%M') }}
-                            {% else %}-{% endif %}
+                          {% else %}-{% endif %}
                         </td>
                         <td class="text-center">
-                            {% if row.updated_at %}
+                          {% if row.updated_at %}
                             {{ row.updated_at.strftime('%Y-%m-%d %H:%M') }}
-                            {% else %}-{% endif %}
+                          {% else %}-{% endif %}
                         </td>
+
                         <td class="text-center">
-                            <div class="d-flex gap-1 justify-content-center">
-                                <a class="btn btn-sm btn-outline-primary" href="/bbs/bbs_update/{{ row.no }}">Update</a>
-                                <form action="/bbs/bbs_delete/{{ row.no }}" method="post"
-                                      onsubmit="return confirm('삭제하시겠습니까?');">
-                                    <!-- CSRF를 쓰는 경우 hidden 필드 추가 -->
-                                    {# <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> #}
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
-                            </div>
+                          <div class="d-flex gap-1 justify-content-center">
+                            {# 수정 페이지 이동:
+                               - GET /bbs/bbs_update/{no} → 수정 폼
+                               - 서버: @app.get("/bbs/bbs_update/{no}") #}
+                            <a class="btn btn-sm btn-outline-primary" href="/bbs/bbs_update/{{ row.no }}">Update</a>
+
+                            {# 삭제 요청:
+                               - POST /bbs/bbs_delete/{no}
+                               - 서버: @app.post("/bbs/bbs_delete/{no}") → DB delete 후 Redirect
+                               - CSRF 사용 시 hidden 필드 추가 필요
+                               - onsubmit 확인창으로 우발 삭제 방지 #}
+                            <form action="/bbs/bbs_delete/{{ row.no }}" method="post"
+                                  onsubmit="return confirm('삭제하시겠습니까?');">
+                              {# <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> #}
+                              <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                          </div>
                         </td>
-                    </tr>
-                    {% endfor %}
+                      </tr>
+                      {% endfor %}
+
                     {% else %}
-                    <tr>
+                      {# 데이터가 없을 때:
+                         - 빈 상태 안내(UI)
+                         - 서버에서 rows=[] 또는 None일 수 있으니 위 if문으로 널/길이 모두 체크 #}
+                      <tr>
                         <td colspan="6">
-                            <div class="empty-state">게시물이 없습니다.</div>
+                          <div class="empty-state">게시물이 없습니다.</div>
                         </td>
-                    </tr>
+                      </tr>
                     {% endif %}
                     </tbody>
                 </table>
