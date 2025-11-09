@@ -139,6 +139,8 @@ INSERT INTO bbs(title, content, writer) VALUES (%s, %s, %s);
 
 > `bbs_list.html`은 카드 상단 이미지 + 검색툴바 + 테이블로 구성되어 있습니다. 날짜는 `strftime('%Y-%m-%d %H:%M')`로 간단 표기합니다.
 
+<img width="748" height="408" alt="스크린샷 2025-11-09 11 33 39" src="https://github.com/user-attachments/assets/11258a91-8ca6-4806-8abd-32140df44440" />
+
 ---
 
 ## 템플릿 가이드
