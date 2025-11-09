@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}BBS_insert{% endblock %}
+
+{% block scripts %}
+<style>
+  /* 폼이 화면을 다 먹지 않도록 폭을 제한하고 가운데 정렬 */
+  .form-wrap {
+    max-width: 820px;   /* 필요 시 640~900px 사이로 조절 */
+    margin: 24px auto;
+  }
+  .form-table th {
+    width: 140px;       /* 라벨 열 고정폭 */
+    white-space: nowrap;
+    background: #fffbe6; /* 은은한 구분 배경 */
+  }
+  .form-table td input.form-control,
+  .form-table td textarea.form-control {
+    width: 100%;        /* 셀 안에서만 가득 차도록 */
+  }
+  .form-table textarea {
+    min-height: 240px;  /* 스크린샷 감안하여 높이 확보, 필요 시 조절 */
+    resize: vertical;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h2>bbs</h2>
+  <a href="/bbs/bbs_list">
+      <button type="button" class="btn btn-primary">bbs list</button>
+  </a>
+  <a href="/">
+      <button type="button" class="btn btn-danger">home</button>
+  </a>
+  <hr color="red">
+
+  <div class="form-wrap">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <img src="/static/img/img2.jpg" style="width:100%;max-height:200px;object-fit:cover;border-radius:.25rem;" alt="bbs image">
+          <table class="table table-bordered align-middle form-table mb-3">
+            <colgroup>
+              <col style="width:140px;">
+              <col>
+            </colgroup>
+            <tbody>
+            <tr>
+                <th scope="row">
+                  <label for="title" class="form-label mb-0">Title</label>
+                </th>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="no"
+                    name="no"
+                    readonly
+                    minlength="1"
+                    maxlength="200"
+                    value="{{row.no}}"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label for="title" class="form-label mb-0">Title</label>
+                </th>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    readonly
+                    minlength="1"
+                    maxlength="200"
+                    value="{{row.title}}"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label for="content" class="form-label mb-0">Content</label>
+                </th>
+                <td>
+                  <textarea
+                    class="form-control"
+                    id="content"
+                    name="content"
+                    readonly
+                    minlength="1"
+                    maxlength="5000">{{row.content}}</textarea>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label for="writer" class="form-label mb-0">Writer</label>
+                </th>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="writer"
+                    name="writer"
+                    readonly
+                    minlength="1"
+                    value="apple"
+                    maxlength="50"
+                    value="{{row.writer}}"
+                  >
+                </td>
+              </tr>
+            <tr>
+                <td class="text-center" colspan="2">
+                      <div class="d-flex gap-1 justify-content-center">
+                        <a class="btn btn-sm btn-outline-success" href="/bbs/bbs_list">List</a>
+                        <a class="btn btn-sm btn-outline-primary" href="/bbs/bbs_update/{{ row.no }}">Update</a>
+                        <form action="/bbs/bbs_delete/{{ row.no }}" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
+                          <!-- CSRF를 쓰는 경우 hidden 필드 추가 -->
+                          {# <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> #}
+                          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                      </div>
+                    </td>
+            </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+Jinja2>=3.1,<4
+python-multipart>=0.0.6  # 폼/파일 업로드가 있다면 함께 권장
+pymysql
+
