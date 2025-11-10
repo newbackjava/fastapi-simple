@@ -7,6 +7,8 @@
 
 ## 데이터 흐름 다이어그램
 
+<img width="592" height="561" alt="스크린샷 2025-11-09 00 23 26" src="https://github.com/user-attachments/assets/f766f2f1-6e50-49d4-96e6-59dce978a31b" />
+
 <img width="1482" height="1036" alt="스크린샷 2025-11-09 09 32 09" src="https://github.com/user-attachments/assets/bdfbc957-2154-4ed4-9029-21beee713eae" />
 
 ---
